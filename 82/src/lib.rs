@@ -19,7 +19,7 @@ fn h(m: &[u8]) -> Vec<u8> {
 
 // bit(h: bytes, i: int) -> int
 fn bit(h_val: &[u8], i: usize) -> u8 {
-    //haven't implemented this one yet ---------------------
+    return (h[(i/8) as usize] >> (i%8))&1;
 }
 
 // expmod(b:int,e:int,m:int) -> int
@@ -95,26 +95,63 @@ fn scalarmult(p: &Vec<BigInt>, e: &BigInt, q: &BigInt, d: &BigInt) -> Vec<BigInt
 
 
 fn encodeint(y: &BigInt, b: usize) -> Vec<u8> {
-    let bits = Vec::new();
+    let mut bits = Vec::new();
     for i in 0..b {
         bits.push((y>>i)&1);
     }
     
     let bytes: Vec<u8> = Vec::new();
-    for i in 0..8 {
-        bytes.push(bits[i*8+j]<<j);
+    for i in 0..(b/8) as u8 {
+        for j in 0..8{
+            bytes.push(bits[i*8+j]<<j);
+        }
     }
 
     return Vec::from(bytes.sum() as u8);
 }
 
 fn encodepoint(p: &Vec<BigInt>, b: usize) -> Vec<u8> {
+    let x = p[0];
+    let y = p[1];
+    let mut bits = Vec::new();
+    for i in 0..(b-1){
+        bits.push((y>>i)&1);
+    }
+    bits.push(x&1);
     
+    let bytes: Vec<u8> = Vec::new();
+    for i in 0..(b/8) as u8{
+        for j in 0..8{
+            bytes.push(bits[i*8+j]<<j);
+        }
+        
+    }
+
+    return Vec::from(bytes.sum() as u8);
+    //I feel like there should probably be a way to do this that doesn't just make it one u8 but
+    //splits it up into several u8s
 }
 
 pub fn publickey(sk: &[u8], b: usize, q: &BigInt, d: &BigInt, b_point: &Vec<BigInt>) -> Vec<u8> {
+    let h = h(sk);
+    let mut temp = Vec::new();
+    for i in range 3.. b-2{
+        temp.push(2.pow(i)*bit(h,i));
+    }
+
+    let a = 2.pow(b-2) + temp.sum();
+    let A = scalarmult(B, a);
+    return encodepoint(A);
+}
 
 fn hint(m: &[u8], b: usize) -> BigInt {
+    let h = H(m);
+    let mut temp = Vec::new();
+    for i in 0..2*b{
+        temp.append(2.pow(i)*bit(h,i);
+    }
+    return temp.sum();
+}   
 
 pub fn signature(m: &[u8], sk: &[u8], pk: &[u8], b: usize, q: &BigInt, l: &BigInt, d: &BigInt, b_point: &Vec<BigInt>) -> Vec<u8> {
 
