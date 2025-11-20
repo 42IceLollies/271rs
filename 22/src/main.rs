@@ -110,4 +110,3 @@ fn fair_game(words: [&str; 6], answer: &str){
     println!("{}", BOT);
 
 }
-
