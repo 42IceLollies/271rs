@@ -17,9 +17,20 @@ fn heapify<T>(mut h: Heap<T>, mut i: usize, gt: fn(&T, &T) -> bool) -> Heap<T> {
                   
 }
 
-fn reheapify<T>(mut h: Heap<T>, i: usize, gt: fn(&T, &T) -> bool) -> Heap<T> {
-    todo!();
-    //not really sure what this function is for :/
+fn reheapify<T>(mut h: Heap<T>, mut i: usize, gt: fn(&T, &T) -> bool) -> Vec<T> {
+    //organize the items at each depth laterally
+    //branches at depth = 2^i for i being a depth iterator
+    
+    //could we literally just compare it to the indeces right next to it? I think so because its
+    //already organized so that this should be easy enough
+
+    while i>0 && gt(&h[i], &h[i-1]){
+        h.swap(i, i-1);
+        i-=1;
+    }
+
+    return h;
+
 }
 
 fn vec_to_heap<T>(mut xs: Vec<T>, gt: fn(&T, &T) -> bool) -> Heap<T> {
@@ -31,8 +42,14 @@ fn vec_to_heap<T>(mut xs: Vec<T>, gt: fn(&T, &T) -> bool) -> Heap<T> {
 }   
 
 fn heap_to_vec<T>(mut h: Heap<T>, gt: fn(&T, &T) -> bool) -> Vec<T> {
-    todo!();
+    for i in 0..h.len(){
+        h = reheapify(h, i, gt);
+    
+    }
 
+    return h;
+        
+}
 
 fn hsort<T>(xs: Vec<T>, gt: fn(&T, &T) -> bool) -> Vec<T> {
     return heap_to_vec(vec_to_heap(xs, gt), gt);
@@ -43,9 +60,14 @@ fn main() {
     fn f(x: &u64, y: &u64) -> bool {
         return x > y;
     }
+    fn lt(x:&u64, y:&u64) -> bool{
+        return x<y;
+    }
     dbg!(&xs);
-    //let sorted: Vec<u64> = hsort(xs, f);
-    let sorted: Vec<u64> = vec_to_heap(xs, f);
+    let sorted: Vec<u64> = hsort(xs, f);
+    //let sorted: Vec<u64> = vec_to_heap(xs, f);
     dbg!(&sorted);
+    let resorted: Vec<u64> = hsort(sorted, lt);
+    dbg!(&resorted);
     return;
 }
