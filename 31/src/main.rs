@@ -24,7 +24,9 @@
 //package name is hamming 
 
 fn main() {
-    hamming::weight_u8(01010101);
+    println!("Weight of {:08b}: {}", 13, hamming::weight_u8(13 as u8));
+    println!("Weight of {:064b}: {}", 255, hamming::weight_u64(255 as u64)); 
+    println!("Distance between {:08b} and {:08b}: {}", 13, 17, hamming::distance_u8(13 as u8, 17 as u8)); 
 }
 
 
