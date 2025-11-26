@@ -27,14 +27,13 @@ pub trait Pop<T> {
 }
 
 fn second_last_node<T>(mut n_curr: Node<T>, mut n_prev: Node<T>) -> Node<T>{
-    
+
     match n_curr.next {
-        Some(ref v) => {
-            n_prev = n_curr.clone();
-            n_curr = *n_curr.next.unwrap();
-            return second_last_node(n_curr, n_prev)
-           }
-        None => return n_prev,
+        Some(ref v) => return second_last_node(**v, n_curr),
+        None => match n_prev.next {
+            Some(_) => return n_prev,
+            None => return n_curr,
+        }
      }
 
 }
@@ -56,7 +55,7 @@ impl<T> Pop<T> for Queue<T> {
         match self.vals{
         Some(ref v) =>
             match v.next {
-                Some(n) => return (Some(second_last_node(self.vals.unwrap(), self.vals.unwrap()).next.unwrap().data), Queue{vals: Some(*n)}),
+                Some(n) => return (Some(second_last_node(self.vals.unwrap(), Node{data: T, next: None}).next.unwrap().data), Queue{vals: Some(*n)}),
                 None => return (Some(v.data), Queue{vals: None}),
             }
             None => return (None, Queue{vals: None}),
