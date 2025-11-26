@@ -1,4 +1,6 @@
-use stack::*;
+//Traits
+
+use traits::*;
 
 // Should this code be copy pasted?
 // No.
@@ -38,23 +40,23 @@ fn test_queue() {
     s = s.push(String::from("0"));
     s = s.push(String::from("1"));
     (popped, s) = s.pop();
-    println!("Stack POP: should be Some(\"0\"), is {popped:?}");
+    println!("Queue POP: should be Some(\"0\"), is {popped:?}");
     s = s.push(String::from("n"));
     (popped, s) = s.pop();
-    println!("Stack POP: should be Some(\"1\"), is {popped:?}");
+    println!("Queue POP: should be Some(\"1\"), is {popped:?}");
     (popped, s) = s.pop();
-    println!("Stack POP: should be Some(\"n\"), is {popped:?}");
+    println!("Queue POP: should be Some(\"n\"), is {popped:?}");
     (popped, s) = s.pop();
-    println!("Stack POP: should be None, is {popped:?}");
+    println!("Queue POP: should be None, is {popped:?}");
     s = s.push(String::from("m"));
     (popped, _) = s.pop();
-    println!("Stack POP: should be Some(\"m\"), is {popped:?}");
+    println!("Queue POP: should be Some(\"m\"), is {popped:?}");
     let mut s: Queue<i32> = queue();
     let popped: Option<i32>;
     s = s.push(123);
     s = s.push(456);
     (popped, _) = s.pop();
-    println!("Stack POP: should be Some(123), is {popped:?}");
+    println!("Queue POP: should be Some(123), is {popped:?}");
 }
 
 fn main() {
