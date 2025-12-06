@@ -1,0 +1,8 @@
+[package]
+name = "diff"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+lcs = { path = "../B2" }
+borrowed_lcs = {path = "../B3"}
